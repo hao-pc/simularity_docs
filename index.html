@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MVP 223-ФЗ — сравнение положений с эталоном</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+  <script src="https://unpkg.com/pdfjs-dist@4.6.82/build/pdf.min.mjs" type="module"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>MVP 223‑ФЗ: сравнение положений с эталоном</h1>
+      <p class="sub">Статический сайт (GitHub Pages). DOCX/PDF → пункты → сравнение → отчёт TXT/JSON.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>1) Эталон</h2>
+      <div class="row">
+        <div>
+          <label class="label">Файл эталона (DOCX/PDF)</label>
+          <input id="etalonFile" type="file" accept=".docx,.pdf" />
+          <div id="etalonMeta" class="meta"></div>
+        </div>
+        <div>
+          <label class="label">Критичные пункты (через запятую)</label>
+          <input id="criticalClauses" type="text" placeholder="например: 2.2,2.4,6.10.17,6.10.18" />
+          <div class="hint">Если критичный пункт отсутствует или сильно отличается — статус «изменения не внесены».</div>
+        </div>
+      </div>
+      <details>
+        <summary>Настройки сравнения</summary>
+        <div class="grid2">
+          <div>
+            <label class="label">Порог similarity для CHANGED (общий)</label>
+            <input id="similarityThreshold" type="number" step="0.001" value="0.985" />
+          </div>
+          <div>
+            <label class="label">Порог similarity для критичных (если ниже → NOT_APPLIED)</label>
+            <input id="criticalMinSim" type="number" step="0.001" value="0.970" />
+          </div>
+          <div>
+            <label class="label">Показывать расхождений в сводке (max)</label>
+            <input id="maxDiffs" type="number" step="1" value="25" />
+          </div>
+          <div>
+            <label class="label">Игнорируемые фрагменты (regex, по строке)</label>
+            <textarea id="ignoreRegexes" rows="4" placeholder="Например:
+от\s*\d{1,2}\.\d{1,2}\.\d{2,4}
+утвержден[оа]?\s.*?(приказ|распоряжение).*?\d+"></textarea>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>2) Документы контрагентов</h2>
+      <label class="label">Загрузить документы (можно несколько, DOCX/PDF)</label>
+      <input id="clientFiles" type="file" accept=".docx,.pdf" multiple />
+      <div id="clientsMeta" class="meta"></div>
+      <div class="actions">
+        <button id="runBtn" class="primary" disabled>Сравнить</button>
+        <button id="clearBtn">Сбросить</button>
+      </div>
+      <div class="hint">Имя контрагента берётся из имени файла (без расширения).</div>
+    </section>
+
+    <section class="card">
+      <h2>3) Результат</h2>
+      <div class="actions">
+        <button id="downloadTxt" disabled>Скачать summary.txt</button>
+        <button id="downloadJson" disabled>Скачать results.json</button>
+      </div>
+      <pre id="summary" class="output">Загрузите эталон и документы контрагентов, затем нажмите «Сравнить».</pre>
+
+      <h3>Детали</h3>
+      <div id="details" class="details"></div>
+    </section>
+
+    <section class="card">
+      <h2>Как выложить на GitHub Pages</h2>
+      <ol>
+        <li>Создайте репозиторий, добавьте <code>index.html</code>, <code>styles.css</code>, <code>app.js</code>.</li>
+        <li>Settings → Pages → Deploy from a branch → <code>main</code> / <code>/root</code>.</li>
+        <li>Откройте выданный URL.</li>
+      </ol>
+      <p class="hint">Сайт работает полностью в браузере. Файлы никуда не отправляются.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">MVP 223‑ФЗ • Статический прототип</div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

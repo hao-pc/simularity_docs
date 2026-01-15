@@ -439,20 +439,8 @@ $("runBtn").addEventListener("click", async () => {
 });
 
 function renderSummary(results){
-  const total = results.length;
-  const ok = results.filter(r=>r.status==="OK").length;
-  const bad = results.filter(r=>r.status==="NOT_APPLIED").length;
-  const warn = results.filter(r=>r.status==="NEEDS_REVIEW").length;
-  const diffs = results.filter(r=>r.status==="DIFFS").length;
-
-  const lines = [
-    `Всего: ${total}`,
-    `OK (всё внесено): ${ok}`,
-    `Изменения не внесены: ${bad}`,
-    `Есть расхождения: ${diffs}`,
-    `Нужна ручная проверка: ${warn}`,
-  ];
-  $("summary").textContent = lines.join(" • ");
+  // Сводная строка убрана по запросу.
+  $("summary").textContent = "";
 }
 
 function renderResults(results, criticalSet){

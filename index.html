@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cравнение положений (эталон vs документ)</title>
+  <title>223-ФЗ — сравнение положений (эталон vs документ)</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- DOCX -> text -->
   <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
@@ -16,6 +16,7 @@
   <header>
     <div class="container">
       <h1>223‑ФЗ: сравнение положений о закупках с эталоном</h1>
+      <p class="sub">Работает на GitHub Pages (без сервера). Файлы остаются в браузере.</p>
     </div>
   </header>
 
@@ -78,6 +79,17 @@
       <div id="summary" class="summary">Загрузите эталон и документы, затем нажмите «Сравнить».</div>
       <div id="results" class="results"></div>
     </section>
+
+    <section class="card">
+      <h2>Как выложить на GitHub Pages</h2>
+      <ol>
+        <li>Создайте репозиторий и добавьте файлы <code>index.html</code>, <code>styles.css</code>, <code>app.js</code>.</li>
+        <li>GitHub → Settings → Pages → Deploy from a branch → <code>main</code> / <code>/root</code>.</li>
+        <li>Откройте выданный URL.</li>
+      </ol>
+      <p class="hint">Важно: GitHub Pages — статический хостинг. Поэтому всё сравнение и генерация DOCX выполняются в браузере.</p>
+    </section>
+  </main>
 
   <footer>
     <div class="container">MVP 223‑ФЗ • HTML + DOCX экспорт (по одному DOCX на каждого контрагента)</div>

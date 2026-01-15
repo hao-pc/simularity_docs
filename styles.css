@@ -53,3 +53,6 @@ button.primary{background:#1a2a3f;border-color:#2e4a6a}
 
 .added{font-weight:700}
 .removed{text-decoration:line-through;opacity:.75}
+
+
+.result-status{padding:10px 0;font-size:14px}

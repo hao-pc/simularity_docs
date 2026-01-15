@@ -402,7 +402,7 @@ $("clearBtn").addEventListener("click", () => {
   $("ignoreRegexes").value = "";
   setStatus("");
   setSummary("Загрузите эталон и документы, затем нажмите «Сравнить».");
-  $("results").innerHTML = "";
+  $("results").innerHTML = `<div class="result-status">Сравниваю…</div>`;
   $("etalonMeta").textContent = "";
   $("clientsMeta").textContent = "";
   etalonParsed = null;
@@ -414,7 +414,7 @@ $("clearBtn").addEventListener("click", () => {
 $("runBtn").addEventListener("click", async () => {
   setStatus("Думаю...");
   setSummary("");
-  $("results").innerHTML = "";
+  $("results").innerHTML = `<div class="result-status">Сравниваю…</div>`;
   lastRunState = { clients: new Map() };
 
   const criticalSet = new Set(($("criticalClauses").value || "").split(",").map(s=>s.trim()).filter(Boolean));
@@ -460,6 +460,7 @@ function renderSummary(results){
 
 function renderResults(results, criticalSet){
   const root = $("results");
+  root.innerHTML = "";
 
   results.forEach((r, idx) => {
     const wrap = document.createElement("section");

@@ -1,99 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>223-ФЗ — сравнение положений (эталон vs документ)</title>
-  <link rel="stylesheet" href="styles.css" />
-  <!-- DOCX -> text -->
-  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
-  <!-- Inline diff (jsdiff) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/8.0.2/diff.min.js"></script>
-  <!-- DOCX export (dolanmiu/docx) UMD build -->
-  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>223-ФЗ — сравнение положений (эталон vs документ)</title>
+<link href="styles.css" rel="stylesheet"/>
+<!-- DOCX -> text -->
+<script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+<!-- Inline diff (jsdiff) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/8.0.2/diff.min.js"></script>
+<!-- DOCX export (dolanmiu/docx) UMD build -->
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>223‑ФЗ: сравнение положений о закупках с эталоном</h1>
-      <p class="sub">Работает на GitHub Pages (без сервера). Файлы остаются в браузере.</p>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="card">
-      <h2>1) Эталон</h2>
-      <div class="grid2">
-        <div>
-          <label class="label">Файл эталона (DOCX/PDF)</label>
-          <input id="etalonFile" type="file" accept=".docx,.pdf" />
-          <div id="etalonMeta" class="meta"></div>
-        </div>
-        <div>
-          <label class="label">Критичные пункты (через запятую)</label>
-          <input id="criticalClauses" type="text" placeholder="например: 2.2,2.4,6.10.17,6.10.18" />
-          <div class="hint">Если критичный пункт отсутствует или сильно отличается — статус «изменения не внесены».</div>
-        </div>
-      </div>
-
-      <details class="settings">
-        <summary>Настройки сравнения</summary>
-        <div class="grid3">
-          <div>
-            <label class="label">Порог similarity (общий)</label>
-            <input id="similarityThreshold" type="number" step="0.001" value="0.985" />
-          </div>
-          <div>
-            <label class="label">Порог similarity (критичные)</label>
-            <input id="criticalMinSim" type="number" step="0.001" value="0.970" />
-          </div>
-          <div>
-            <label class="label">Игнорируемые фрагменты (regex, по строке)</label>
-            <textarea id="ignoreRegexes" rows="5" placeholder="Например:
+<header>
+<div class="container">
+<h1>223‑ФЗ: сравнение положений о закупках с эталоном</h1>
+<p class="sub">Работает без сервера. Файлы остаются в браузере.</p>
+</div>
+</header>
+<main class="container">
+<section class="card">
+<h2>1) Эталон</h2>
+<div class="grid2">
+<div>
+<label class="label">Файл эталона (DOCX/PDF)</label>
+<input accept=".docx,.pdf" id="etalonFile" type="file"/>
+<div class="meta" id="etalonMeta"></div>
+</div>
+<div>
+<label class="label">Критичные пункты (через запятую)</label>
+<input id="criticalClauses" placeholder="например: 2.2,2.4,6.10.17,6.10.18" type="text"/>
+<div class="hint">Если критичный пункт отсутствует или сильно отличается — статус «изменения не внесены».</div>
+</div>
+</div>
+<details class="settings">
+<summary>Настройки сравнения</summary>
+<div class="grid3">
+<div>
+<label class="label">Порог similarity (общий)</label>
+<input id="similarityThreshold" step="0.001" type="number" value="0.985"/>
+</div>
+<div>
+<label class="label">Порог similarity (критичные)</label>
+<input id="criticalMinSim" step="0.001" type="number" value="0.970"/>
+</div>
+<div>
+<label class="label">Игнорируемые фрагменты (regex, по строке)</label>
+<textarea id="ignoreRegexes" placeholder="Например:
 от\s*\d{1,2}\.\d{1,2}\.\d{2,4}
-утвержден[оа]?\s.*?(приказ|распоряжение).*?\d+"></textarea>
-          </div>
-        </div>
-      </details>
-    </section>
-
-    <section class="card">
-      <h2>2) Документы контрагентов</h2>
-      <label class="label">Загрузить документы (можно несколько, DOCX/PDF)</label>
-      <input id="clientFiles" type="file" accept=".docx,.pdf" multiple />
-      <div id="clientsMeta" class="meta"></div>
-
-      <div class="actions">
-        <button id="runBtn" class="primary" disabled>Сравнить</button>
-        <button id="clearBtn">Сбросить</button>
-      </div>
-
-      <div class="hint">
+утвержден[оа]?\s.*?(приказ|распоряжение).*?\d+" rows="5"></textarea>
+</div>
+</div>
+</details>
+</section>
+<section class="card">
+<h2>2) Документы контрагентов</h2>
+<label class="label">Загрузить документы (можно несколько, DOCX/PDF)</label>
+<input accept=".docx,.pdf" id="clientFiles" multiple="" type="file"/>
+<div class="meta" id="clientsMeta"></div>
+<div class="actions">
+<button class="primary" disabled="" id="runBtn">Сравнить</button>
+<button id="clearBtn">Сбросить</button>
+</div><div class="meta" id="statusLine"></div>
+<div class="hint">
         Имя контрагента берётся из имени файла (без расширения).<br/>
         Для больших документов рекомендовано сначала сравнить 1–2 файла и проверить качество извлечения текста.
       </div>
-    </section>
+</section>
+<section class="card">
+<h2>3) Результаты</h2>
+<div class="results" id="results"></div>
+</section>
 
-    <section class="card">
-      <h2>3) Результаты</h2>
-      <div id="results" class="results"></div>
-    </section>
-
-    <section class="card">
-      <h2>Как выложить на GitHub Pages</h2>
-      <ol>
-        <li>Создайте репозиторий и добавьте файлы <code>index.html</code>, <code>styles.css</code>, <code>app.js</code>.</li>
-        <li>GitHub → Settings → Pages → Deploy from a branch → <code>main</code> / <code>/root</code>.</li>
-        <li>Откройте выданный URL.</li>
-      </ol>
-      <p class="hint">Важно: GitHub Pages — статический хостинг. Поэтому всё сравнение и генерация DOCX выполняются в браузере.</p>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">MVP 223‑ФЗ • HTML + DOCX экспорт (по одному DOCX на каждого контрагента)</div>
-  </footer>
-
-  <script type="module" src="app.js"></script>
+</main>
+<footer>
+<div class="container">MVP 223‑ФЗ • HTML + DOCX экспорт (по одному DOCX на каждого контрагента)</div>
+</footer>
+<script src="app.js" type="module"></script>
 </body>
 </html>

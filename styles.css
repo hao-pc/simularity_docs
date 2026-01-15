@@ -23,7 +23,6 @@ button.primary{background:#1a2a3f;border-color:#2e4a6a}
 .meta{margin-top:10px;color:#93a4b8;font-size:12px}
 .hint{margin-top:8px;color:#93a4b8;font-size:12px;line-height:1.35}
 .settings summary{cursor:pointer;color:#c7d6ea}
-.summary{white-space:pre-wrap;background:#0b0f14;border:1px solid #23364b;border-radius:12px;padding:12px}
 .results{display:grid;gap:12px;margin-top:12px}
 
 .counterparty{border:1px solid #23364b;border-radius:14px;background:#0b0f14;padding:12px}

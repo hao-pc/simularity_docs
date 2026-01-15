@@ -3,6 +3,17 @@ import * as pdfjsLib from "https://unpkg.com/pdfjs-dist@4.6.82/build/pdf.min.mjs
 
 const $ = (id) => document.getElementById(id);
 
+function setSummary(text){
+  const el = document.getElementById("summary");
+  if (el) el.textContent = text;
+}
+
+function setStatus(text){
+  const el = document.getElementById("statusLine");
+  if (el) el.textContent = text;
+}
+
+
 // Clause heading pattern: "2.4 ..." / "п. 2.4 ..." etc.
 const CL_START_RE = /^\s*(?:п\.?\s*|пп\.?\s*|пункт\s*|подпункт\s*)?(?<num>\d+(?:\.\d+){0,6})\s*(?:[)\.\-–:]\s+|\s+)(?<rest>.*)$/i;
 const WS_RE = /\s+/g;
@@ -389,7 +400,8 @@ $("clearBtn").addEventListener("click", () => {
   $("clientFiles").value = "";
   $("criticalClauses").value = "";
   $("ignoreRegexes").value = "";
-  $("summary").textContent = "Загрузите эталон и документы, затем нажмите «Сравнить».";
+  setStatus("");
+  setSummary("Загрузите эталон и документы, затем нажмите «Сравнить».");
   $("results").innerHTML = "";
   $("etalonMeta").textContent = "";
   $("clientsMeta").textContent = "";
@@ -400,7 +412,8 @@ $("clearBtn").addEventListener("click", () => {
 });
 
 $("runBtn").addEventListener("click", async () => {
-  $("summary").textContent = "Сравниваю…";
+  setStatus("Думаю...");
+  setSummary("");
   $("results").innerHTML = "";
   lastRunState = { clients: new Map() };
 
@@ -436,11 +449,13 @@ $("runBtn").addEventListener("click", async () => {
   renderSummary(results);
   renderResults(results, criticalSet);
   lastRunState.criticalSet = criticalSet;
+
+  setStatus("");
 });
 
 function renderSummary(results){
   // Сводная строка убрана по запросу.
-  $("summary").textContent = "";
+  setSummary("");
 }
 
 function renderResults(results, criticalSet){

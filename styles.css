@@ -52,7 +52,10 @@ button.primary{background:#1a2a3f;border-color:#2e4a6a}
 .text{white-space:pre-wrap;line-height:1.35;font-size:13px}
 
 .added{font-weight:700}
-.removed{text-decoration:line-through;opacity:.75}
+.missing{font-weight:700}
+/* backwards-compat: if anything still uses .removed, don't strike-through */
+.removed{font-weight:700;text-decoration:none;opacity:1}
+.note{font-size:12px;opacity:.8}
 
 
 .result-status{padding:10px 0;font-size:14px}

@@ -197,12 +197,20 @@ function splitDiffHtml(leftText, rightText){
   let rightHtml = "";
   for(const p of parts){
     const safe = escapeHtml(p.value);
+    const hasMeaningful = (p.value || "").trim().length > 0;
+
     if(p.added){
-      // appears only in right
-      rightHtml += `<span class="added">${safe}</span>`;
+      // appears only in right (counterparty)
+      // For UX: just bold the fragment (no extra annotation).
+      if(hasMeaningful) rightHtml += `<span class="added">${safe}</span>`;
+      else rightHtml += safe;
     } else if(p.removed){
-      // appears only in left
-      leftHtml += `<span class="removed">${safe}</span>`;
+      // appears only in left (etalon)
+      if(hasMeaningful){
+        leftHtml += `<span class="missing">${safe}</span><span class="note"> (не найдено у контрагента)</span>`;
+      } else {
+        leftHtml += safe;
+      }
     } else {
       leftHtml += safe;
       rightHtml += safe;
@@ -226,31 +234,50 @@ function sanitizeFilename(name){
 }
 
 function textRunsFromDiffParts(parts, side){
-  // side: "left" shows removed; "right" shows added
+  // side: "left" => Etalon, "right" => Document
+  // In Etalon we DO NOT strike removed fragments. Instead:
+  //   removed fragment -> bold + "(не найдено у контрагента)"
+  // In Document:
+  //   added fragment -> bold (no extra note)
+
+  const d = window.docx;
   const runs = [];
+
+  function pushTextWithBreaks(text, style){
+    const lines = (text || "").split("\n");
+    for(let i=0;i<lines.length;i++){
+      const t = lines[i];
+      if(i===0) runs.push(new d.TextRun({ text: t, ...style }));
+      else runs.push(new d.TextRun({ text: t, break: 1, ...style }));
+    }
+  }
+
   for(const p of parts){
     const val = p.value || "";
     const isAdded = !!p.added;
     const isRemoved = !!p.removed;
-    if(side==="left" && isAdded) continue;
-    if(side==="right" && isRemoved) continue;
+    const hasMeaningful = val.trim().length > 0;
 
-    const style = {};
-    if(side==="left" && isRemoved) style.strike = true;
-    if(side==="right" && isAdded) style.bold = true;
-
-    // preserve \n using break runs
-    const lines = val.split("\n");
-    for(let i=0;i<lines.length;i++){
-      const text = lines[i];
-      if(i===0){
-        runs.push(new window.docx.TextRun({ text, ...style }));
+    if(side === "left"){
+      if(isAdded) continue; // doesn't exist in etalon
+      if(isRemoved){
+        pushTextWithBreaks(val, { bold: true });
+        if(hasMeaningful) runs.push(new d.TextRun({ text: " (не найдено у контрагента)" }));
       } else {
-        runs.push(new window.docx.TextRun({ text, break: 1, ...style }));
+        pushTextWithBreaks(val, {});
+      }
+    } else {
+      // right
+      if(isRemoved) continue; // not in document
+      if(isAdded){
+        pushTextWithBreaks(val, { bold: true });
+      } else {
+        pushTextWithBreaks(val, {});
       }
     }
   }
-  if(!runs.length) runs.push(new window.docx.TextRun(""));
+
+  if(!runs.length) runs.push(new d.TextRun(""));
   return runs;
 }
 

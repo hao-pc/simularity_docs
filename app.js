@@ -207,7 +207,7 @@ function splitDiffHtml(leftText, rightText){
     } else if(p.removed){
       // appears only in left (etalon)
       if(hasMeaningful){
-        leftHtml += `<span class="missing">${safe}</span><span class="note"> (не найдено у контрагента)</span>`;
+        leftHtml += `<span class="missing">${safe}</span>`;
       } else {
         leftHtml += safe;
       }

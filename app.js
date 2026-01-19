@@ -262,7 +262,6 @@ function textRunsFromDiffParts(parts, side){
       if(isAdded) continue; // doesn't exist in etalon
       if(isRemoved){
         pushTextWithBreaks(val, { bold: true });
-        if(hasMeaningful) runs.push(new d.TextRun({ text: " (не найдено у контрагента)" }));
       } else {
         pushTextWithBreaks(val, {});
       }
